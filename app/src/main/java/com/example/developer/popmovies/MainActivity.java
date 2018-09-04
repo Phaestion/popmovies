@@ -1,5 +1,6 @@
 package com.example.developer.popmovies;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     private RecyclerView moviePostersRecycler;
 
     private String url = Consts.popMoviesUrl;
+    private List<MoviePoster> movies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         loadingProgress.setVisibility(View.GONE);
         moviePostersRecycler.setVisibility(View.VISIBLE);
 
+        this.movies = movies;
         moviePostersRecycler.setAdapter(new MoviePosterAdapter(movies, this));
     }
 
@@ -82,7 +85,10 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     public void onItemClicked(int position) {
         Log.d(TAG, "Got click on " + position);
 
-        //todo: add intent here
+        Intent intent = new Intent(this, MovieDetails.class);
+        intent.putExtra(Consts.EXTRA_MOVIE_DETAILS, movies.get(position));
+
+        startActivity(intent);
     }
 
     @Override

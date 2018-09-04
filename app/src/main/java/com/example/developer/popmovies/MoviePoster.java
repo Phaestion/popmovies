@@ -4,14 +4,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MoviePoster {
+public class MoviePoster implements Serializable {
     private final int id, voteCount;
     private final boolean adult, video;
     private final double voteAverage, popularity;
     private final String title, posterPath, originalLanguage, originalTitle, backdropPath, overview, releaseDate;
-    private final ArrayList<Integer> genreIds = new ArrayList();
+    private final ArrayList<Integer> genreIds = new ArrayList<>();
 
     public MoviePoster(JSONObject job) throws JSONException {
         id = job.getInt("id");

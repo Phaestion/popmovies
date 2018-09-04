@@ -10,4 +10,5 @@ public class Consts {
     public static final String topMoviesUrl = baseUrl + "top_rated?api_key=" + apiKey;
 
     public static final String moviePosterUrl = "https://image.tmdb.org/t/p/w185/";
+    public static final String EXTRA_MOVIE_DETAILS = "extra_movie_details";
 }
