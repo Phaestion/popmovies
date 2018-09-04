@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -23,13 +25,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.ItemClickListener {
     private static final String TAG = "MainActivity";
 
     private ProgressBar loadingProgress;
     private RecyclerView moviePostersRecycler;
 
-    private String url= Consts.popMoviesUrl;
+    private String url = Consts.popMoviesUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +42,67 @@ public class MainActivity extends AppCompatActivity {
         moviePostersRecycler = findViewById(R.id.rc_movie_posters);
 
         moviePostersRecycler.setHasFixedSize(true);
-        moviePostersRecycler.setLayoutManager(new GridLayoutManager(this, 3));
+        moviePostersRecycler.setLayoutManager(new GridLayoutManager(this, 2));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        loadMovies();
+    }
+
+
+    private void loadMovies() {
         loadingProgress.setVisibility(View.VISIBLE);
         moviePostersRecycler.setVisibility(View.GONE);
 
         new GetPopularMovies().execute(url);
     }
 
+    private void toggelSortingAndLoad() {
 
-    public void showMovies(List<MoviePoster> movies) {
+        if (url.equals(Consts.popMoviesUrl)) {
+            url = Consts.topMoviesUrl;
+        } else {
+            url = Consts.popMoviesUrl;
+        }
 
+        loadMovies();
+    }
+
+    private void showMovies(List<MoviePoster> movies) {
+        loadingProgress.setVisibility(View.GONE);
+        moviePostersRecycler.setVisibility(View.VISIBLE);
+
+        moviePostersRecycler.setAdapter(new MoviePosterAdapter(movies, this));
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        Log.d(TAG, "Got click on " + position);
+
+        //todo: add intent here
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.action_change_sorting:
+                toggelSortingAndLoad();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private class GetPopularMovies extends AsyncTask<String, Void, List<MoviePoster>> {
@@ -85,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             } catch (IOException | JSONException e) {
-                e.printStackTrace();
                 error = e;
             }
 
@@ -99,7 +145,13 @@ public class MainActivity extends AppCompatActivity {
             if (moviePosters != null && error == null) {
                 //Successfully got movies
 
-                Log.d(TAG, "Got " + moviePosters.size() + " from themoviedb");
+                Log.d(TAG, "Got " + moviePosters.size() + " from themoviedb.org");
+
+                showMovies(moviePosters);
+            } else if (error != null) {
+                Log.e(TAG, "Error fetching movies", error);
+            } else {
+                Log.e(TAG, "Unknown error fetching movies");
             }
         }
     }
