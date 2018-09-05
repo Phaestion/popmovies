@@ -16,15 +16,10 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
     private final List<MoviePoster> moviePosters;
     private final ItemClickListener listener;
 
-    public interface ItemClickListener {
-        void onItemClicked(int position);
-    }
-
     public MoviePosterAdapter(List<MoviePoster> moviePosters, ItemClickListener listener) {
         this.moviePosters = moviePosters;
         this.listener = listener;
     }
-
 
     @NonNull
     @Override
@@ -50,6 +45,9 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         return moviePosters.size();
     }
 
+    public interface ItemClickListener {
+        void onItemClicked(int position);
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final ImageView moviePoster;
