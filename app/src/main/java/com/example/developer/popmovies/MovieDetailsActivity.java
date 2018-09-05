@@ -9,10 +9,10 @@ import android.widget.TextView;
 import com.example.developer.popmovies.Helpers.Consts;
 import com.squareup.picasso.Picasso;
 
-public class MovieDetails extends AppCompatActivity {
+public class MovieDetailsActivity extends AppCompatActivity {
 
-    private TextView titleTV;
-    private ImageView posterIV;
+    private TextView titleTv, overviewTv, releaseYearTv, ratingTv;
+    private ImageView posterIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,19 +20,25 @@ public class MovieDetails extends AppCompatActivity {
         setContentView(R.layout.activity_movie_details);
 
 
-        titleTV = findViewById(R.id.tv_detail_title);
-        posterIV = findViewById(R.id.iv_detail_poster);
+        titleTv = findViewById(R.id.tv_detail_title);
+        posterIv = findViewById(R.id.iv_detail_poster);
+        overviewTv = findViewById(R.id.tv_detail_overview);
+        releaseYearTv = findViewById(R.id.tv_detail_release_year);
+        ratingTv = findViewById(R.id.tv_detail_rating);
 
         Intent intent = getIntent();
 
         if (intent != null && intent.hasExtra(Consts.EXTRA_MOVIE_DETAILS)) {
             MoviePoster movie = (MoviePoster) intent.getSerializableExtra(Consts.EXTRA_MOVIE_DETAILS);
 
-            titleTV.setText(movie.getTitle());
+            titleTv.setText(movie.getTitle());
+            overviewTv.setText(movie.getOverview());
+            releaseYearTv.setText(String.format(getString(R.string.reslease_Date), movie.getReleaseDate()));
+            ratingTv.setText(String.format(getString(R.string.rating), String.valueOf(movie.getVoteAverage())));
 
             Picasso.with(this)
                     .load(Consts.moviePosterUrl + movie.getPosterPath())
-                    .into(posterIV);
+                    .into(posterIv);
 
         }
     }

@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     private ProgressBar loadingProgress;
     private RecyclerView moviePostersRecycler;
+    private List<MoviePoster> movies;
 
     private String url = Consts.popMoviesUrl;
-    private List<MoviePoster> movies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,11 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     protected void onResume() {
         super.onResume();
 
-        loadMovies();
+        if (movies == null) {
+            loadMovies();
+        } else {
+            showMovies(movies);
+        }
     }
 
 
@@ -62,16 +66,6 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         new GetPopularMovies().execute(url);
     }
 
-    private void toggelSortingAndLoad() {
-
-        if (url.equals(Consts.popMoviesUrl)) {
-            url = Consts.topMoviesUrl;
-        } else {
-            url = Consts.popMoviesUrl;
-        }
-
-        loadMovies();
-    }
 
     private void showMovies(List<MoviePoster> movies) {
         loadingProgress.setVisibility(View.GONE);
@@ -85,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     public void onItemClicked(int position) {
         Log.d(TAG, "Got click on " + position);
 
-        Intent intent = new Intent(this, MovieDetails.class);
+        Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra(Consts.EXTRA_MOVIE_DETAILS, movies.get(position));
 
         startActivity(intent);
@@ -103,8 +97,14 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         int itemId = item.getItemId();
 
         switch (itemId) {
-            case R.id.action_change_sorting:
-                toggelSortingAndLoad();
+            case R.id.action_sort_pop:
+                url = Consts.popMoviesUrl;
+                loadMovies();
+                return true;
+
+            case R.id.action_sort_rating:
+                url = Consts.topMoviesUrl;
+                loadMovies();
                 return true;
         }
 

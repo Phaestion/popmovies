@@ -3,4 +3,10 @@
     <string name="place_holder">Hopefully this changes...</string>
     <string name="movie_poster_image">Movie poster image</string>
     <string name="sort">Toggle sort</string>
+    <string name="trailers">Trailers</string>
+    <string name="rating">Rating: %s/10"</string>
+    <string name="reslease_Date">Released: %s</string>
+    <string name="overview">Overview</string>
+    <string name="sort_by_popularity">Sort by popularity</string>
+    <string name="sort_by_rating">Sort by rating</string>
 </resources>
