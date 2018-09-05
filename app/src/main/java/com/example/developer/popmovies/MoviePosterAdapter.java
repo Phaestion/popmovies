@@ -13,7 +13,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.ViewHolder> {
-    private static final String TAG = "MoviePosterAdapter";
     private final List<MoviePoster> moviePosters;
     private final ItemClickListener listener;
 
@@ -53,7 +52,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView moviePoster;
+        private final ImageView moviePoster;
 
         private ViewHolder(View itemView) {
             super(itemView);

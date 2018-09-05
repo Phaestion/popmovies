@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
                     return movies;
                 }
 
-            } catch (IOException | JSONException e) {
+            } catch (IOException | JSONException | NullPointerException e) {
                 error = e;
             }
 
